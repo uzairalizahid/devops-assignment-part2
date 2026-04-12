@@ -29,6 +29,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_DB=assignment_db
+      - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - "5433:5432" # Different port for the database
     volumes:
