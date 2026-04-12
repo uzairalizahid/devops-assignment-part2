@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  web_part2:
+    # Instead of building a Dockerfile, we use the base Node image directly
+    image: node:18-alpine 
+    container_name: devops_web_part2
+    working_dir: /app
+    # This mounts your GitHub code directly into the container
+    volumes:
+      - .:/app
+    # Installs dependencies and runs the app on startup
+    command: sh -c "npm install && node server.js"
+    ports:
+      - "3001:3000" # Using port 3001 instead of 3000
+    environment:
+      - DB_USER=postgres
+      - DB_HOST=db_part2
+      - DB_NAME=assignment_db
+      - DB_PASSWORD=mysecretpassword
+      - DB_PORT=5432
+    depends_on:
+      - db_part2
+
+  db_part2:
+    image: postgres:15-alpine
+    container_name: devops_db_part2
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=assignment_db
+    ports:
+      - "5433:5432" # Different port for the database
+    volumes:
+      - db_data_part2:/var/lib/postgresql/data
+
+volumes:
+  db_data_part2:
