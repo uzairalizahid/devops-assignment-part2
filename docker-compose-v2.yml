@@ -9,8 +9,8 @@ services:
     # This mounts your GitHub code directly into the container
     volumes:
       - .:/app
-    # Installs dependencies and runs the app on startup
-    command: sh -c "npm install && node server.js"
+    # Using --no-audit and --no-fund makes the install much faster/lighter
+    command: sh -c "npm install --no-audit --no-fund && node server.js"
     ports:
       - "3001:3000" # Using port 3001 instead of 3000
     environment:
