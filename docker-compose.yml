@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  web:
+    # We will build from the local Dockerfile first
+    build: .
+    # Note: For AWS, you will later change this to: image: yourdockerhubusername/my-web-app:v1
+    container_name: web_app_container
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_USER=postgres
+      - DB_HOST=db
+      - DB_NAME=assignment_db
+      - DB_PASSWORD=mysecretpassword
+      - DB_PORT=5432
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db_container
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=assignment_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data # This satisfies the persistent volume requirement
+
+volumes:
+  db_data: # Declaring the named volume
